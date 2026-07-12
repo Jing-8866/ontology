@@ -1,0 +1,13 @@
+PREFIX uni: <http://www.example.org/university#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?course ?courseName
+WHERE {
+  ?teacher rdf:type uni:Teacher ;
+           uni:hasName "Alice" ;
+           uni:teaches ?student .
+
+  ?student uni:enrolledIn ?course .
+
+  ?course uni:hasName ?courseName .
+}
