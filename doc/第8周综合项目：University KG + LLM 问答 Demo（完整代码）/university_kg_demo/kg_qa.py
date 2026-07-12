@@ -21,12 +21,8 @@ LLM_API_KEY = ai_config.get(MODEL_NAME).get("apiKey")
 LLM_API_URL = ai_config.get(MODEL_NAME).get("base_url")
 LLM_MODEL = ai_config.get(MODEL_NAME).get("model_name")
 
-# print(ai_config)
-# print(LLM_MODEL)
-# print( LLM_API_URL)
-# print(  LLM_API_KEY)
 
-# 如果是 DeepSeek / 智谱 / 千问，只需换 URL 和 Key
+# 如果是  智谱 / 千问，只需换 URL 和 Key
 
 # ===============================
 # SPARQL 查询加载
