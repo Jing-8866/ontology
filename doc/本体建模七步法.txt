@@ -1,0 +1,192 @@
+本体建模七步法（Seven-Step Method for Ontology Development）
+
+最早由 Natalya F. Noy 和 Deborah L. McGuinness 在《Ontology Development 101》中提出，是目前最经典、最适合初学者的本体构建流程。下面按步骤系统讲解，并补充实战要点。
+
+---
+
+## 内容：
+	1. 确定领域与范围  
+	2. 复用现有本体  
+	3. 列举关键术语  
+	4. 定义类及层次结构  
+	5. 定义类的属性  
+	6. 定义属性约束  
+	7. 创建实例  
+
+## 一、确定本体的领域与范围（Domain & Scope）
+
+**目标：** 明确“建什么”“给谁用”“解决什么问题”。
+
+关键问题：
+- **领域**：是医学、金融、制造，还是教育？
+- **范围**：覆盖全领域，还是只覆盖某个子领域？（如“医学”→“心血管疾病”）
+- **用途**：用于语义检索、知识图谱、推理、数据集成，还是问答系统？
+- **用户**：领域专家、普通用户，还是机器系统？
+
+**产出物：**
+- 一段清晰的**范围说明（Scope Statement）**
+- 1～3 个典型**应用场景/用例（Use Cases）**
+
+示例：
+> 本体重描述“企业采购流程”，用于采购合同自动审核与合规检查，主要用户为风控系统与采购专员。
+
+---
+
+## 二、考虑复用现有本体（Reuse Existing Ontologies）
+
+**目标：** 避免重复造轮子，提高互操作性。
+
+常见复用来源：
+- 通用顶层本体：DOLCE、BFO、SUMO
+- 领域本体：Schema.org、SNOMED CT、FOAF、GoodRelations
+- 开放知识图谱：Wikidata、DBpedia
+
+实操建议：
+- 先查是否存在**标准本体或行业规范**
+- 复用类、属性时，**保留原 URI**，便于跨系统融合
+- 对复用部分做**适配与裁剪**，不要全盘照搬
+
+---
+
+## 三、列举领域中的重要术语（Enumerate Key Terms）
+
+**目标：** 建立“词汇清单”，避免遗漏核心概念。
+
+做法：
+- 从文档、表单、数据库字段、业务流程图中提取名词
+- 不区分“类 / 属性 / 实例”，先全部列出
+- 邀请领域专家参与头脑风暴
+
+示例（采购领域）：
+> 采购申请、供应商、合同、金额、审批人、发票、付款状态……
+
+注意：
+- 此时**不做建模决策**，只是收集术语
+- 术语表后续会逐步被归类到类、属性和实例中
+
+---
+
+## 四、定义类与类的层次结构（Define Classes & Hierarchy）
+
+**目标：** 搭建本体的“骨架”。
+
+### 1. 识别类（Class）
+类是**抽象概念集合**，而不是具体个体。
+- ✅ 类：供应商、合同、产品
+- ❌ 实例：张三（某供应商）、编号为 HT2024-001 的合同
+
+### 2. 构建层次结构（Taxonomy）
+常用两种策略：
+- **自顶向下**：从“事物 → 有形对象 → 产品”逐层细分
+- **自底向上**：从具体术语归纳出父类
+
+推荐：两者结合，先搭主干，再补枝叶。
+
+### 3. 层次设计原则
+- **单继承为主，多继承谨慎使用**
+- 子类应比父类**语义更窄、约束更强**
+- 避免过深层次（一般 ≤5 层）
+
+工具支持：
+- Protégé 中的 “Class Hierarchy”
+- OWL 的 `rdfs:subClassOf`
+
+---
+
+## 五、定义类的属性（Define Properties）
+
+**目标：** 描述类之间的**关系**和**特征**。
+
+OWL 中通常分为三类：
+
+| 类型 | 作用 | 示例 |
+|---|---|---|
+| 对象属性（Object Property） | 类与类之间的关系 | `hasSupplier`、`partOf` |
+| 数据属性（Data Property） | 类与数据类型的关系 | `hasPrice`、`hasDate` |
+| 注释属性（Annotation Property） | 描述信息 | `rdfs:label`、`rdfs:comment` |
+
+设计要点：
+- 属性要挂在**合适的类**上
+- 明确**定义域（domain）**和**值域（range）**
+- 命名统一，如：`hasX` / `isXOf`
+
+示例：
+```turtle
+:Contract rdf:type owl:Class .
+:Supplier rdf:type owl:Class .
+:hasSupplier rdf:type owl:ObjectProperty ;
+             rdfs:domain :Contract ;
+             rdfs:range :Supplier .
+```
+
+---
+
+## 六、定义属性的约束（Define Property Restrictions）
+
+**目标：** 让本体具备**推理能力和精确语义**。
+
+常见约束类型：
+
+### 1. 基数约束（Cardinality）
+- `exactly 1`：必须有且仅有一个
+- `min 1`：至少一个
+- `max 1`：至多一个
+
+示例：每份合同**恰好有一个**供应商。
+
+### 2. 值的类型与范围
+- 数据属性的值域：string、integer、date 等
+- 对象属性的范围：特定类或其子类
+
+### 3. 特性声明
+- `Functional`：函数型（最多一个值）
+- `InverseFunctional`：逆函数型
+- `Transitive`：传递性（如 `partOf`）
+- `Symmetric`：对称性（如 `relatedTo`）
+- `InverseOf`：定义逆属性
+
+示例：
+```turtle
+:hasPart rdf:type owl:ObjectProperty ,
+                  owl:TransitiveProperty .
+:partOf owl:inverseOf :hasPart .
+```
+
+这一层是本体从“词汇表”升级为“可推理模型”的关键。
+
+---
+
+## 七、创建实例（Create Instances）
+
+**目标：** 用具体数据“填充”本体。
+
+步骤：
+1. 根据类创建个体（Individual）
+2. 为个体添加属性值
+3. 利用推理机（Reasoner）检查一致性
+
+示例：
+```turtle
+:Contract_HT2024_001 rdf:type :Contract ;
+                     :hasSupplier :Supplier_ABC ;
+                     :hasAmount "50000"^^xsd:decimal .
+```
+
+注意：
+- 实例通常来自业务数据，而非人工逐个编写
+- 很多项目中，**实例层由数据库/图谱导入，本体层保持稳定**
+
+---
+
+## 补充：本体建模的五个核心原则
+
+1. **清晰性（Clarity）**：定义无歧义，可被人和机器理解
+2. **一致性（Consistency）**：不与已有公理冲突
+3. **可扩展性（Extensibility）**：预留扩展空间，不频繁重构
+4. **最小编码偏好（Minimal Encoding Bias）**：不绑定某种具体编程语言或存储方案
+5. **最小本体承诺（Minimal Ontological Commitment）**：只定义“必须有的”，不随意增加假设
+
+---
+
+
+
