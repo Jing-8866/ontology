@@ -1,0 +1,3 @@
+*.rdf -text
+*.ttl -text
+*.owl -text
