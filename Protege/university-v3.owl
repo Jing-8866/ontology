@@ -22,6 +22,26 @@
     
 
 
+    <!-- http://www.example.org/university#enrolledIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.example.org/university#enrolledIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Student"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.example.org/university#teaches -->
 
     <owl:ObjectProperty rdf:about="http://www.example.org/university#teaches">
@@ -82,6 +102,40 @@
     
 
 
+    <!-- http://www.example.org/university#Course -->
+
+    <owl:Class rdf:about="http://www.example.org/university#Course"/>
+    
+
+
+    <!-- http://www.example.org/university#GraduateStudent -->
+
+    <owl:Class rdf:about="http://www.example.org/university#GraduateStudent">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.example.org/university#Student"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.example.org/university#hasAge"/>
+                        <owl:someValuesFrom>
+                            <rdfs:Datatype>
+                                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+                                <owl:withRestrictions rdf:parseType="Collection">
+                                    <rdf:Description>
+                                        <xsd:minExclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#int">22</xsd:minExclusive>
+                                    </rdf:Description>
+                                </owl:withRestrictions>
+                            </rdfs:Datatype>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
+        <owl:disjointWith rdf:resource="http://www.example.org/university#UndergraduateStudent"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.example.org/university#Person -->
 
     <owl:Class rdf:about="http://www.example.org/university#Person"/>
@@ -92,6 +146,21 @@
 
     <owl:Class rdf:about="http://www.example.org/university#Student">
         <rdfs:subClassOf rdf:resource="http://www.example.org/university#Person"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.example.org/university#Teacher"/>
     </owl:Class>
     
 
@@ -100,6 +169,33 @@
 
     <owl:Class rdf:about="http://www.example.org/university#Teacher">
         <rdfs:subClassOf rdf:resource="http://www.example.org/university#Person"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.example.org/university#UndergraduateStudent -->
+
+    <owl:Class rdf:about="http://www.example.org/university#UndergraduateStudent">
+        <owl:equivalentClass>
+            <owl:Class>
+                <owl:intersectionOf rdf:parseType="Collection">
+                    <rdf:Description rdf:about="http://www.example.org/university#Student"/>
+                    <owl:Restriction>
+                        <owl:onProperty rdf:resource="http://www.example.org/university#hasAge"/>
+                        <owl:someValuesFrom>
+                            <rdfs:Datatype>
+                                <owl:onDatatype rdf:resource="http://www.w3.org/2001/XMLSchema#int"/>
+                                <owl:withRestrictions rdf:parseType="Collection">
+                                    <rdf:Description>
+                                        <xsd:maxInclusive rdf:datatype="http://www.w3.org/2001/XMLSchema#int">22</xsd:maxInclusive>
+                                    </rdf:Description>
+                                </owl:withRestrictions>
+                            </rdfs:Datatype>
+                        </owl:someValuesFrom>
+                    </owl:Restriction>
+                </owl:intersectionOf>
+            </owl:Class>
+        </owl:equivalentClass>
     </owl:Class>
     
 
@@ -133,6 +229,15 @@
         <rdf:type rdf:resource="http://www.example.org/university#Student"/>
         <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#int">20</university:hasAge>
         <university:hasName>Bob</university:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.example.org/university#Charlie -->
+
+    <owl:NamedIndividual rdf:about="http://www.example.org/university#Charlie">
+        <rdf:type rdf:resource="http://www.example.org/university#Student"/>
+        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#int">25</university:hasAge>
     </owl:NamedIndividual>
     
 

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
-<rdf:RDF xmlns="http://www.semanticweb.org/jingzhao/ontologies/2026/6/untitled-ontology-7/"
-     xml:base="http://www.semanticweb.org/jingzhao/ontologies/2026/6/untitled-ontology-7/"
+<rdf:RDF xmlns="http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/"
+     xml:base="http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
@@ -22,12 +22,42 @@
     
 
 
+    <!-- http://www.example.org/university#enrolledIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.example.org/university#enrolledIn">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Student"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:range>
+    </owl:ObjectProperty>
+    
+
+
     <!-- http://www.example.org/university#teaches -->
 
     <owl:ObjectProperty rdf:about="http://www.example.org/university#teaches">
         <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
-        <rdfs:domain rdf:resource="http://www.example.org/university#Teacher"/>
-        <rdfs:range rdf:resource="http://www.example.org/university#Student"/>
+        <rdfs:domain>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#teaches"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Teacher"/>
+            </owl:Restriction>
+        </rdfs:domain>
+        <rdfs:range>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#teaches"/>
+                <owl:someValuesFrom rdf:resource="http://www.example.org/university#Student"/>
+            </owl:Restriction>
+        </rdfs:range>
     </owl:ObjectProperty>
     
 
@@ -72,6 +102,12 @@
     
 
 
+    <!-- http://www.example.org/university#Course -->
+
+    <owl:Class rdf:about="http://www.example.org/university#Course"/>
+    
+
+
     <!-- http://www.example.org/university#Person -->
 
     <owl:Class rdf:about="http://www.example.org/university#Person"/>
@@ -82,6 +118,21 @@
 
     <owl:Class rdf:about="http://www.example.org/university#Student">
         <rdfs:subClassOf rdf:resource="http://www.example.org/university#Person"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:minQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:minQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.example.org/university#enrolledIn"/>
+                <owl:maxQualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">5</owl:maxQualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.example.org/university#Course"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <owl:disjointWith rdf:resource="http://www.example.org/university#Teacher"/>
     </owl:Class>
     
 
@@ -110,7 +161,8 @@
     <owl:NamedIndividual rdf:about="http://www.example.org/university#Alice">
         <rdf:type rdf:resource="http://www.example.org/university#Teacher"/>
         <university:teaches rdf:resource="http://www.example.org/university#Bob"/>
-        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">35</university:hasAge>
+        <university:teaches rdf:resource="http://www.example.org/university#July"/>
+        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#int">35</university:hasAge>
         <university:hasName>Alice</university:hasName>
     </owl:NamedIndividual>
     
@@ -120,8 +172,18 @@
 
     <owl:NamedIndividual rdf:about="http://www.example.org/university#Bob">
         <rdf:type rdf:resource="http://www.example.org/university#Student"/>
-        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#decimal">20</university:hasAge>
+        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#int">20</university:hasAge>
         <university:hasName>Bob</university:hasName>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.example.org/university#July -->
+
+    <owl:NamedIndividual rdf:about="http://www.example.org/university#July">
+        <rdf:type rdf:resource="http://www.example.org/university#Student"/>
+        <university:hasAge rdf:datatype="http://www.w3.org/2001/XMLSchema#int">19</university:hasAge>
+        <university:hasName>July</university:hasName>
     </owl:NamedIndividual>
 </rdf:RDF>
 
