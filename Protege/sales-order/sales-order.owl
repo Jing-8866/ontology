@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://example.org/sales-order#"
+     xml:base="http://example.org/sales-order"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:obda="https://w3id.org/obda/vocabulary#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://example.org/sales-order#"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/sales-order#hasCustomer -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/sales-order#hasCustomer">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- http://example.org/sales-order#hasProduct -->
+
+    <owl:ObjectProperty rdf:about="http://example.org/sales-order#hasProduct">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topObjectProperty"/>
+    </owl:ObjectProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Data properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/sales-order#category -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#category">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#city -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#city">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#customerName -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#customerName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#orderDate -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#orderDate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#orderId -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#orderId">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#productName -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#productName">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#quantity -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#quantity">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#reportMonth -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#reportMonth">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#statDate -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#statDate">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#totalAmount -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#totalAmount">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://example.org/sales-order#unitPrice -->
+
+    <owl:DatatypeProperty rdf:about="http://example.org/sales-order#unitPrice">
+        <rdfs:subPropertyOf rdf:resource="http://www.w3.org/2002/07/owl#topDataProperty"/>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://example.org/sales-order#Customer -->
+
+    <owl:Class rdf:about="http://example.org/sales-order#Customer"/>
+    
+
+
+    <!-- http://example.org/sales-order#DailyStat -->
+
+    <owl:Class rdf:about="http://example.org/sales-order#DailyStat"/>
+    
+
+
+    <!-- http://example.org/sales-order#MonthlyReport -->
+
+    <owl:Class rdf:about="http://example.org/sales-order#MonthlyReport"/>
+    
+
+
+    <!-- http://example.org/sales-order#Product -->
+
+    <owl:Class rdf:about="http://example.org/sales-order#Product"/>
+    
+
+
+    <!-- http://example.org/sales-order#SalesOrder -->
+
+    <owl:Class rdf:about="http://example.org/sales-order#SalesOrder"/>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi -->
+

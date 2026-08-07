@@ -1,0 +1,51 @@
+[PrefixDeclaration]
+:		http://example.org/sales-order#
+owl:		http://www.w3.org/2002/07/owl#
+rdf:		http://www.w3.org/1999/02/22-rdf-syntax-ns#
+xml:		http://www.w3.org/XML/1998/namespace
+xsd:		http://www.w3.org/2001/XMLSchema#
+obda:		https://w3id.org/obda/vocabulary#
+rdfs:		http://www.w3.org/2000/01/rdf-schema#
+
+[MappingDeclaration] @collection [[
+mappingId	SalesOrder
+target		:Order_{id} a :SalesOrder ; :orderId {id}^^xsd:int ; :orderDate {od}^^xsd:date ; :hasCustomer :Customer_{cid} ; :hasProduct :Product_{pid} . 
+source		SELECT
+			order_id AS id,
+			customer_id AS cid,
+			product_id AS pid,
+			order_date AS od
+			FROM dwd_sales_order_detail
+
+mappingId	Customer
+target		:Customer_{cid} a :Customer ; :customerName {cname}^^xsd:string ; :city {city}^^xsd:string . 
+source		SELECT
+			customer_id AS cid,
+			customer_name AS cname,
+			city
+			FROM dim_customer
+
+mappingId	Product
+target		:Product_{pid} a :Product ; :productName {pname}^^xsd:string ; :category {cat}^^xsd:string . 
+source		SELECT
+			product_id AS pid,
+			product_name AS pname,
+			category AS cat
+			FROM dim_product
+
+mappingId	DWS：DailyStat
+target		:DailyStat_{dt}_{pid} a :DailyStat ; :statDate {dt}^^xsd:date ; :totalAmount {amt}^^xsd:decimal . 
+source		SELECT
+			stat_date AS dt,
+			product_id AS pid,
+			total_amount AS amt
+			FROM dws_sales_order_stat_daily
+
+mappingId	ADS：MonthlyReport
+target		:MonthlyReport_{mon} a :MonthlyReport ; :reportMonth {mon}^^xsd:string ; :totalAmount {amt}^^xsd:decimal . 
+source		SELECT
+			report_month AS mon,
+			total_amount AS amt
+			FROM ads_sales_summary
+]]
+
