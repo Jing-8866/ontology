@@ -8,3 +8,31 @@ git config --global user.email "新邮箱@example.com"
 看全部全局配置
 
 git config --global --list
+
+
+============================================================ 
+
+一、为不同用户生成新 key
+
+# 公司 
+ssh-keygen -t ed25519 -C "xxxx@work.com.cn"  -f ~/.ssh/id_ed25519_work
+# 个人 
+ssh-keygen -t ed25519 -C "xxxx@personal.com"  -f ~/.ssh/id_ed25519_personal
+
+二、 配置 ~/.ssh/config
+
+# 公司账号
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_work
+
+# 个人账号
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_personal
+
+
+三、修改仓库 remote
+git remote set-url origin git@github-work:用户名/仓库名.git
