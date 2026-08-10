@@ -1,0 +1,10 @@
+一键切换全局用户名和邮箱
+
+git config --global user.name "新用户名"
+git config --global user.email "新邮箱@example.com"
+
+
+
+看全部全局配置
+
+git config --global --list
