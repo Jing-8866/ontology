@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <uri id="Imports Wizard Entry" name="https://schema.org/" uri="schemaorg-week5.owl"/>
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public">
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="http://example.org/sales-order" uri="sales-order/sales-order.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="http://www.semanticweb.org/jing/ontologies/2026/7/untitled-ontology-6/" uri="library-week4-v2-mysql26.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="duplicate:http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/" uri="university/university-v1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="duplicate:http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/" uri="university/university-v2.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="duplicate:http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/" uri="university/university-v3.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="duplicate:http://www.semanticweb.org/jingzhao/ontologies/2026/7/untitled-ontology-3/" uri="university/university-v4.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="https://schema.org/" uri="schemaorg-week5.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:http://www.semanticweb.org/jing/ontologies/2026/7/untitled-ontology-6/" uri="library/library-week4-v1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:http://www.semanticweb.org/jing/ontologies/2026/7/untitled-ontology-6/" uri="library/library-week4-v2-mysql26.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:http://www.semanticweb.org/jing/ontologies/2026/7/untitled-ontology-6/" uri="library/library.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:https://schema.org/" uri="sumo/schemaorg-week5.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:https://schema.org/" uri="sumo/download/schemaorg-github.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1787135096923" name="shadowed:https://schema.org/" uri="sumo/download/schemaorg.owl"/>
+    </group>
+</catalog>
