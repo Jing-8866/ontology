@@ -1,14 +1,22 @@
 
 
-### URL  
+## 1、URL  
+### Web Url
+```
 http://localhost:7474/
+```
 
-初始账号密码(首次登录需要改密码)：  
+### Connection to Neo4j Url
+```
+bolt://localhost:7687
+```
+
+### 初始账号密码(首次登录需要改密码)：  
 ```
 neo4j/neo4j
 ```
 
-## 服务启停  
+## 2、服务启停  
 ```
 neo4j.bat windows-service install   # 5.x 用这条（4.x 是 install-service）
 neo4j.bat start
@@ -16,7 +24,7 @@ neo4j.bat status
 neo4j.bat stop
 ```
 
-## 临时会话使用  
+### 临时会话使用  
 在neo4j的安装目录bin/下创建一个【start-neo4j.cmd】文件
 - 假设不用系统环境变量中配置的java版本
 ```
