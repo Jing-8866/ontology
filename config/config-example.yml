@@ -1,0 +1,9 @@
+neo4j:
+  description: "Neo4j连接配置"
+  url_prefix: "bolt"
+  host: <IP>
+  port: <Port> # default: 7687
+  username: <User>
+  password: <Password>
+  default_database: <Database>
+  # url: {url_prefix}//{host}:{port} # eg【bolt://localhost:7687】
