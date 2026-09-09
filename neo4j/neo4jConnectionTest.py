@@ -24,7 +24,7 @@ CONFIG = {
     "user": neo4j_con.get("username", "neo4j"),
     "password": neo4j_con.get("password", ""),
     "default_database": neo4j_con.get("default_database", ""),
-    "url": neo4j_con.get("url", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
+    "uri": neo4j_con.get("uri", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
 }
 
 
@@ -69,8 +69,8 @@ class Neo4jConnection:
                 MERGE (b:Person {name: '李四', age: 25})
                 MERGE (c:City {name: '北京'})
                 MERGE (d:City {name: '上海'})
-                MERGE (a)-[:LIVES_IN]->(c)
-                MERGE (b)-[:LIVES_IN]->(d)
+                MERGE (a)-[:LIVES_IN {since: 2010, start: date('2010-01-01'), end: date('2019-12-31')}]->(c)
+                MERGE (b)-[:LIVES_IN {since: 2010, start: date('2010-01-01'), end: date('2019-12-31')}]->(d)
                 MERGE (a)-[:KNOWS {since: 2020}]->(b)
             """)
             logger.info("示例数据创建成功")
@@ -97,32 +97,12 @@ class Neo4jConnection:
         return result
 
 
-def query_neo4j(**kwargs):
-    URI = CONFIG["url"]
-    USER = CONFIG["user"]
-    PASSWORD = CONFIG["password"]
-    
-    # 创建连接实例
-    conn = Neo4jConnection(URI, USER, PASSWORD)
-
-    
-    try:
-        query_str = kwargs.get("query_str")
-
-        conn.query(query_str)
-
-    except Exception as e:
-        logger.error(f"操作失败: {e}")
-    finally:
-        # 关闭连接
-        conn.close()
-
 def test_con():
     # Neo4j 连接配置
     # 默认地址：bolt://localhost:7687
     # 默认用户名：neo4j
     # 密码：请替换为你自己的密码
-    URI = CONFIG["url"]
+    URI = CONFIG["uri"]
     USER = CONFIG["user"]
     PASSWORD = CONFIG["password"]
     
@@ -142,8 +122,8 @@ def test_con():
         # print("\n=== 创建示例数据 ===")
         # conn.create_sample_data()
         
-        # # 4. 查询示例数据
-        # conn.query_sample_data()
+        # 4. 查询示例数据
+        conn.query_sample_data()
         
     except Exception as e:
         logger.error(f"操作失败: {e}")
@@ -153,5 +133,4 @@ def test_con():
 
 
 if __name__ == "__main__":
-    # test_con()
-    query_neo4j()
+    test_con()

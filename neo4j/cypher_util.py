@@ -15,28 +15,28 @@ CONFIG = {
     "user": neo4j_con.get("username", ""),
     "password": neo4j_con.get("password", ""),
     "default_database": neo4j_con.get("default_database", ""),
-    "url": neo4j_con.get("url", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
+    "uri": neo4j_con.get("uri", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
 }
 
 
 class CypherExecutor:
-    def __init__(self, url: str = CONFIG["url"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
+    def __init__(self, uri: str = CONFIG["uri"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
         """
         初始化Neo4j连接
         
-        :param url: 连接地址，如 bolt://localhost:7687
+        :param uri: 连接地址，如 bolt://localhost:7687
         :param user: 用户名
         :param password: 密码
         :param database: 数据库名称，默认neo4j
         """
-        # self.driver = GraphDatabase.driver(url, auth=(user, password))
+        # self.driver = GraphDatabase.driver(uri, auth=(user, password))
         self.database = database
         # logging.basicConfig(level=logging.INFO)
         
         self.driver = None
         try:
-            self.driver = GraphDatabase.driver(url, auth=(user, password))
-            logger.info(f"成功创建到 {url} 的连接驱动")
+            self.driver = GraphDatabase.driver(uri, auth=(user, password))
+            logger.info(f"成功创建到 {uri} 的连接驱动")
         except Exception as e:
             logger.error(f"创建连接驱动失败: {e}")
         
@@ -107,13 +107,13 @@ class CypherExecutor:
 # 全局执行器实例缓存
 _executor_instance = None
 _manager_instance = None
-def get_executor(url: str = CONFIG["url"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]) -> CypherExecutor:
+def get_executor(uri: str = CONFIG["uri"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]) -> CypherExecutor:
     """
     获取或创建执行器实例（单例模式）
     """
     global _executor_instance
     if _executor_instance is None:
-        _executor_instance = CypherExecutor(url, user, password, database)
+        _executor_instance = CypherExecutor(uri, user, password, database)
     return _executor_instance
 
 def run_cypher(cypher: str, *args, **kwargs) -> List[Dict[str, Any]]:
@@ -143,12 +143,12 @@ def run_cypher(cypher: str, *args, **kwargs) -> List[Dict[str, Any]]:
     executor = get_executor()
     return executor.execute_cypher(cypher, *args, **kwargs)
 
-def init_neo4j(url: str = CONFIG["url"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
+def init_neo4j(uri: str = CONFIG["uri"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
     """
     初始化Neo4j连接配置
     """
     global _executor_instance
-    _executor_instance = CypherExecutor(url, user, password, database)
+    _executor_instance = CypherExecutor(uri, user, password, database)
     return _executor_instance
 
 def close_neo4j():
@@ -186,8 +186,8 @@ def with_neo4j(func):
 class Neo4jConnection:
     """上下文管理器方式使用"""
     
-    def __init__(self, url: str = CONFIG["url"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
-        self.executor = CypherExecutor(url, user, password, database)
+    def __init__(self, uri: str = CONFIG["uri"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
+        self.executor = CypherExecutor(uri, user, password, database)
     
     def __enter__(self):
         return self.executor
@@ -204,7 +204,7 @@ def demo_all_usages(database: Optional[str] = None):
     
     # 1. 初始化连接（通常在应用启动时执行一次）
     # init_neo4j(
-    #     url=CONFIG["url"],
+    #     uri=CONFIG["uri"],
     #     user=CONFIG["user"],
     #     password=CONFIG["password"],
     #     database=database,
@@ -302,12 +302,12 @@ def user_example(database: Optional[str] = CONFIG["default_database"]):
     
     # 1. 初始化连接（通常在应用启动时执行一次）
     init_neo4j(
-        url=CONFIG["url"],
+        uri=CONFIG["uri"],
         user=CONFIG["user"],
         password=CONFIG["password"],
         database=database,
     )
-    # url: str = CONFIG["url"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]
+    # uri: str = CONFIG["uri"], user: str = CONFIG["user"], password: str = CONFIG["password"], database: str = CONFIG["default_database"]
 
     # 2. 到处使用统一入口函数
     # 查询用户
@@ -341,25 +341,48 @@ def user_example(database: Optional[str] = CONFIG["default_database"]):
     close_neo4j()
 
 
-def add_data():
+def add_data(username: str, age: int, city: str,start_date: str, end_date:Optional[str]='9999-12-31', friend_name:Optional[str]=None):
     # Merge
     msg_merge = """
-    MERGE (u:Person {name: $name})
+    MERGE (u:Person {name: $username})
     ON CREATE SET 
-        u.name = $name,
-        u.age = $age,
-        u.city = $city
+        u.name = $username,
+        u.age = $age
     ON MATCH SET 
-        u.age = $age,
-        u.city = $city
-    RETURN u
+        u.age = $age
+    
+    with u
+    MERGE (d:City {name: $city})
+    MERGE (u)-[:LIVES_IN {start: date($start_date), end: date($end_date)}]->(d)
+    
+    with u
+    MATCH (f:Person {name: $friend_name})
+    MERGE (u)-[:Knows]->(f)
+    
+
     """
     rst_merge = run_cypher(msg_merge,
-        name="Tom",
-        age=28,
-        city="Chongqing")
-    print(f"Merge结果: {rst_merge}")
+        username=username,
+        age=age,
+        city=city,
+        start_date=start_date,
+        end_date=end_date,
+        friend_name=friend_name
+        )
+    
+    # print(f"{username}数据: {rst_merge}")
 
 if __name__ == "__main__":
     # 运行演示
-    add_data()
+    # add_data("张三", 18, "重庆", "2010-01-01", "2019-12-31", "李四")
+    # add_data("张三", 18, "天津", "2020-01-01", "9999-12-31", "李四")
+
+    # add_data("李四", 30, "上海", "2010-01-01", "2019-12-31", "Tom")
+    # add_data("李四", 30, "北京", "2020-01-01", "9999-12-31", "Tom")
+    
+    # add_data("Alice", 28, "重庆", "2010-01-01", "9999-12-31", "张三")
+    # add_data("Tom", 26, "北京", "2010-01-01", "9999-12-31", "Alice")
+
+    print("="*30)
+    rst = run_cypher("MATCH (data) return labels(data) AS Class, data")
+    print(rst)

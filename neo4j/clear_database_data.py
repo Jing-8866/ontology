@@ -21,7 +21,7 @@ CONFIG = {
     "user": neo4j_con.get("username", "neo4j"),
     "password": neo4j_con.get("password", ""),
     "default_database": neo4j_con.get("default_database", ""),
-    "url": neo4j_con.get("url", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
+    "uri": neo4j_con.get("uri", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
 }
 
 
@@ -184,7 +184,7 @@ def quick_clean_all(exclude: List[str] = None):
     
     :param exclude: 排除的数据库列表，例如 ["important_db"]
     """
-    cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+    cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
     
     try:
         # 获取所有非系统数据库
@@ -221,7 +221,7 @@ def quick_clean_all_with_progress(exclude: List[str] = None):
     """
     带进度显示的快速清理所有数据库
     """
-    cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+    cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
     
     try:
         databases = cleaner.get_databases()
@@ -262,7 +262,7 @@ def quick_clean_all_with_progress(exclude: List[str] = None):
 def interactive_clean():
     """交互式清理 - 选择要清理的数据库"""
     
-    cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+    cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
     
     try:
         # 1. 获取可用数据库
@@ -355,7 +355,7 @@ def quick_clean(database: str = "neo4j"):
     
     :param database: 要清理的数据库名称
     """
-    cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+    cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
     
     try:
         logger.info(f"快速清理数据库: {database}")
@@ -373,7 +373,7 @@ def clean_multiple_databases(databases: List[str]):
     
     :param databases: 要清理的数据库名称列表
     """
-    cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+    cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
     
     try:
         for db in databases:
@@ -406,7 +406,7 @@ def main():
             
         elif command == "--list" or command == "-l":
             # 列出所有数据库
-            cleaner = Neo4jCleaner(CONFIG["url"], CONFIG["user"], CONFIG["password"])
+            cleaner = Neo4jCleaner(CONFIG["uri"], CONFIG["user"], CONFIG["password"])
             try:
                 databases = cleaner.get_databases()
                 print("\n可用的非系统数据库:")

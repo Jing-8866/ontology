@@ -26,8 +26,8 @@ def neo4j_connection( env: Optional[str] = None):
     configs = load_env_config(env)
     config = configs["config"] if configs else None
     neo4j_info = config["neo4j"]
-    url = f"{neo4j_info['url_prefix']}://{neo4j_info['host']}:{neo4j_info['port']}"
-    neo4j_info['url'] = neo4j_info.get("url",url)
+    uri = f"{neo4j_info['url_prefix']}://{neo4j_info['host']}:{neo4j_info['port']}"
+    neo4j_info['uri'] = neo4j_info.get("uri",uri)
 
     return neo4j_info
 

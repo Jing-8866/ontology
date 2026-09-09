@@ -22,7 +22,7 @@ CONFIG = {
     "user": neo4j_con.get("username", "neo4j"),
     "password": neo4j_con.get("password", ""),
     "default_database": neo4j_con.get("default_database", ""),
-    "url": neo4j_con.get("url", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
+    "uri": neo4j_con.get("uri", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
 }
 
 class Neo4jCleaner:
@@ -142,7 +142,7 @@ def clean_neo4j(uri, user, password):
 
 def clear_by_confirm():
     # 连接配置
-    URI = CONFIG["url"]
+    URI = CONFIG["uri"]
     USER = CONFIG["user"]
     PASSWORD = CONFIG["password"]
     
@@ -177,6 +177,6 @@ def clear_by_confirm():
 
 if __name__ == "__main__":
     clear_by_confirm() # 需输入确认再删除
-    # clean_neo4j(CONFIG["url"], CONFIG["user"], CONFIG["password"]) # 直接删除
+    # clean_neo4j(CONFIG["uri"], CONFIG["user"], CONFIG["password"]) # 直接删除
 
     

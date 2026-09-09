@@ -36,3 +36,27 @@ cd /d %NEO4J_HOME%\bin
 call neo4j.bat console
 PAUSE
 ```
+
+
+## 加载import目录数据
+
+操作流程
+```
+// 1. 创建约束
+CREATE CONSTRAINT n10s_unique_uri FOR (r:Resource) REQUIRE r.uri IS UNIQUE;
+
+// 2. 初始化图配置
+CALL n10s.graphconfig.init({ handleVocabUris: 'SHORTEN' });
+
+// 3. 导入本体
+// Windows 使用“绝对路径”导入
+CALL n10s.onto.import.fetch(
+  "file:///ontology.owl",
+  "RDF/XML"
+);
+
+// 4. 验证导入结果
+MATCH (c:Class) RETURN c.uri LIMIT 20;
+```
+
+> Windows 使用“绝对路径”导入，斜杠用正斜杠

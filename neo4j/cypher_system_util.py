@@ -23,7 +23,7 @@ CONFIG = {
     "user": neo4j_con.get("username", ""),
     "password": neo4j_con.get("password", ""),
     "default_database": neo4j_con.get("default_database", "neo4j"),
-    "url": neo4j_con.get("url", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
+    "uri": neo4j_con.get("uri", f"{neo4j_con['url_prefix']}://{neo4j_con['host']}:{neo4j_con['port']}")
 }
 
 
@@ -39,11 +39,11 @@ class DatabaseRole(Enum):
 class Neo4jManager:
     """Neo4j 管理类 - 处理数据库和用户管理"""
     
-    def __init__(self, url: str, user: str, password: str):
-        self.url = url
+    def __init__(self, uri: str, user: str, password: str):
+        self.uri = uri
         self.user = user
         self.password = password
-        self.driver = GraphDatabase.driver(url, auth=(user, password))
+        self.driver = GraphDatabase.driver(uri, auth=(user, password))
     
     def close(self):
         if self.driver:
@@ -302,9 +302,9 @@ class Neo4jManager:
 class CypherExecutor:
     """Cypher 查询执行器"""
     
-    def __init__(self, url: str = CONFIG["url"], user: str = CONFIG["user"], 
+    def __init__(self, uri: str = CONFIG["uri"], user: str = CONFIG["user"], 
                  password: str = CONFIG["password"], database: str = CONFIG["default_database"]):
-        self.url = url
+        self.uri = uri
         self.user = user
         self.password = password
         self.database = database
@@ -312,9 +312,9 @@ class CypherExecutor:
         self.manager = None
         
         try:
-            self.driver = GraphDatabase.driver(url, auth=(user, password))
-            self.manager = Neo4jManager(url, user, password)
-            logger.info(f"成功创建到 {url} 的连接驱动")
+            self.driver = GraphDatabase.driver(uri, auth=(user, password))
+            self.manager = Neo4jManager(uri, user, password)
+            logger.info(f"成功创建到 {uri} 的连接驱动")
         except Exception as e:
             logger.error(f"创建连接驱动失败: {e}")
     
@@ -379,13 +379,13 @@ class CypherExecutor:
 
 _executor_instance = None
 
-def get_executor(url: str = CONFIG["url"], user: str = CONFIG["user"], 
+def get_executor(uri: str = CONFIG["uri"], user: str = CONFIG["user"], 
                  password: str = CONFIG["password"], 
                  database: str = CONFIG["default_database"]) -> CypherExecutor:
     """获取或创建执行器实例"""
     global _executor_instance
     if _executor_instance is None:
-        _executor_instance = CypherExecutor(url, user, password, database)
+        _executor_instance = CypherExecutor(uri, user, password, database)
     return _executor_instance
 
 def run_cypher(cypher: str, *args, **kwargs) -> List[Dict[str, Any]]:
@@ -393,12 +393,12 @@ def run_cypher(cypher: str, *args, **kwargs) -> List[Dict[str, Any]]:
     executor = get_executor()
     return executor.execute_cypher(cypher, *args, **kwargs)
 
-def init_neo4j(url: str = CONFIG["url"], user: str = CONFIG["user"], 
+def init_neo4j(uri: str = CONFIG["uri"], user: str = CONFIG["user"], 
                password: str = CONFIG["password"], 
                database: str = CONFIG["default_database"]):
     """初始化连接"""
     global _executor_instance
-    _executor_instance = CypherExecutor(url, user, password, database)
+    _executor_instance = CypherExecutor(uri, user, password, database)
     return _executor_instance
 
 def close_neo4j():
@@ -468,10 +468,10 @@ def with_neo4j(func):
 
 class Neo4jConnection:
     """上下文管理器"""
-    def __init__(self, url: str = CONFIG["url"], user: str = CONFIG["user"], 
+    def __init__(self, uri: str = CONFIG["uri"], user: str = CONFIG["user"], 
                  password: str = CONFIG["password"], 
                  database: str = CONFIG["default_database"]):
-        self.executor = CypherExecutor(url, user, password, database)
+        self.executor = CypherExecutor(uri, user, password, database)
     
     def __enter__(self):
         return self.executor

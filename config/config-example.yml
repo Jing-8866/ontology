@@ -6,4 +6,4 @@ neo4j:
   username: <User>
   password: <Password>
   default_database: <Database>
-  # url: {url_prefix}//{host}:{port} # eg【bolt://localhost:7687】
+  # uri: {url_prefix}//{host}:{port} # eg【bolt://localhost:7687】
